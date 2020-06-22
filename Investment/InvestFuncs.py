@@ -45,8 +45,8 @@ class StockInfo:
         all_tcks = get_symbols(output_format=output_format, token=self.token)
         return all_tcks
 
-all_tck = StockInfo().parse_symbols(output_format = 'json')
+# all_tck = StockInfo().parse_symbols(output_format = 'json')
 
 
-with open('All_tickers.txt', 'w') as fh:
-    fh.write(str(all_tck))
+# with open('All_tickers.txt', 'w') as fh:
+#     fh.write(json.dumps(all_tck))
