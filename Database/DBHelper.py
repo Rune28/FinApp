@@ -6,7 +6,7 @@ Created on Mon May 25 17:33:02 2020
 """
 
 
-import config
+from Database import config
 import psycopg2
 from datetime import datetime
 
@@ -162,8 +162,6 @@ class StocksDbHelper(ConnectionPSQL):
             self.cur.execute(stmt, tuples_stocks)
         except Exception as e:
             print(e)
-    
-
 
 finapp_users = UserDBHelper(host=config.host,
                 user=config.user, 
