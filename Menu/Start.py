@@ -1,6 +1,4 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Updater, CommandHandler, CallbackQueryHandler
-from telegram.ext import MessageHandler,Filters
 
 
 def start(update, context):

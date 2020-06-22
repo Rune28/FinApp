@@ -10,10 +10,8 @@ token = '1166987527:AAF6t4J0TY-tTOJNEzxcxYDts27vqQjdDCM'
 
 import logging
 
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler
 from telegram.ext import MessageHandler,Filters
-from Investment.InvestFuncs import StockInfo
 from Menu.Start import start
 from Menu.Search import search_company,search_menu
 

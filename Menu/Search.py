@@ -1,7 +1,5 @@
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Updater, CommandHandler, CallbackQueryHandler
-from telegram.ext import MessageHandler,Filters
 
+from Investment.InvestFuncs import StockInfo
 
 
 #####Company Search
@@ -23,7 +21,7 @@ def search_company(update, context):
 Анонс:{i[3]}
 Ссылка:{i[4]}
 Язык:{i[5]}
-Нужна подписка: {i[6]}""")
+Нужна подписка: {subs}""")
             else:
                 update.message.reply_text("К сожалению, новостей нет")
         except Exception as e:
