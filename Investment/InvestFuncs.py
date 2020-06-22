@@ -8,6 +8,7 @@ import yfinance as yf
 from iexfinance.stocks import Stock
 from iexfinance.refdata import get_symbols
 from datetime import datetime
+import json
 
 class StockInfo:
     def __init__(self,token = "sk_1427456e783248ec8841be2292d08a7d"):
@@ -40,6 +41,12 @@ class StockInfo:
     
     def _records(df): return df.to_records(index=False).tolist()
     
-    def parse_symbols(self):
-        all_tcks = get_symbols(output_format='pandas', token=self.token)
-        return self._records(all_tcks)
+    def parse_symbols(self, output_format):
+        all_tcks = get_symbols(output_format=output_format, token=self.token)
+        return all_tcks
+
+all_tck = StockInfo().parse_symbols(output_format = 'json')
+
+
+with open('All_tickers.txt', 'w') as fh:
+    fh.write(str(all_tck))
