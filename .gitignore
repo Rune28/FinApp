@@ -5,3 +5,4 @@
 *.mdb
 *.pdb
 *.sqlite3
+*api_token.py

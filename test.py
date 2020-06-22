@@ -5,7 +5,6 @@ Created on Fri Jun  5 12:03:21 2020
 @author: aovch
 """
 
-token = '1166987527:AAF6t4J0TY-tTOJNEzxcxYDts27vqQjdDCM'
 
 
 import logging
