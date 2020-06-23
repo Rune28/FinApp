@@ -8,3 +8,4 @@
 *config_telegram.py
 *config_database.py
 *config_iex.py
+*.pyc
