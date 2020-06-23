@@ -13,6 +13,7 @@ from telegram.ext import Updater, CommandHandler, CallbackQueryHandler
 from telegram.ext import MessageHandler,Filters
 from Menu.Start import start
 from Menu.Search import search_company,search_menu
+from configs import config_telegram
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
@@ -31,7 +32,7 @@ def main():
     # Create the Updater and pass it your bot's token.
     # Make sure to set use_context=True to use the new context based callbacks
     # Post version 12 this will no longer be necessary
-    updater = Updater(token, use_context=True)
+    updater = Updater(config_telegram.token_telegram, use_context=True)
     db = updater.dispatcher
     print('Bot inited')
     db.add_handler(CommandHandler('start', start))

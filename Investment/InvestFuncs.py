@@ -9,7 +9,7 @@ from iexfinance.stocks import Stock
 from iexfinance.refdata import get_symbols
 from datetime import datetime
 import json
-from Investment import config_iex
+from configs import config_iex
 
 class StockInfo:
     def __init__(self,token = config_iex.iex_token):
