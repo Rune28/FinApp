@@ -9,9 +9,10 @@ from iexfinance.stocks import Stock
 from iexfinance.refdata import get_symbols
 from datetime import datetime
 import json
+from Investment import config_iex
 
 class StockInfo:
-    def __init__(self,token = "sk_1427456e783248ec8841be2292d08a7d"):
+    def __init__(self,token = config_iex.iex_token):
         self.token = token
 
     def _parse_news(self,dct):
