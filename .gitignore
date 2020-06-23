@@ -5,6 +5,5 @@
 *.mdb
 *.pdb
 *.sqlite3
-*config_telegram.py
-*config_iex.py
-*config_database.py
+*api_token.txt
+*config
