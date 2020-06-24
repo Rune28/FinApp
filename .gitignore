@@ -9,3 +9,4 @@
 *config_database.py
 *config_iex.py
 *.pyc
+/data/*
