@@ -10,8 +10,8 @@ services:
         image: "postgres:latest"
         container_name: "postgres_bot"
         environment:
-            - POSTGRES_PASSWORD='docker'
-            - POSTGRES_DB='FinApp'
+            - POSTGRES_PASSWORD=docker
+            - POSTGRES_DB=FinApp
         ports:
             - "5432:5432"
         volumes:
