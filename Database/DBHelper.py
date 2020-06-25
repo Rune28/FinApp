@@ -6,7 +6,7 @@ Created on Mon May 25 17:33:02 2020
 """
 
 
-from configs import config_database
+from configs import config_database as config
 import psycopg2
 from datetime import datetime
 
