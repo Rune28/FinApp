@@ -21,5 +21,7 @@ with open(database_file, 'r') as fh:
 
 tuples = stocks_from_file(file)
 
+print(tuples[0])
+
 
 finapp_stocks.insert_stocks(tuples)

@@ -126,14 +126,13 @@ class StocksDbHelper(ConnectionPSQL):
         "Symbol" varchar(20), 
         "Exchange" varchar(20),
         "Name" varchar(128), 
-        "DateIex" varchar(128), 
+        "DateIex" varchar(10), 
         "Status" int,
         "TypeProduct" varchar(20),
             "Region" varchar(255),
             "Currency" varchar(255),
             "iexId" BOOLEAN ,
-            "figi" varchar(255),
-            "cik" varchar(255))"""
+            "figi" varchar(255) )"""
         # index_user = 'Create index'
         try:
             self.cur.execute(table)
@@ -158,8 +157,7 @@ class StocksDbHelper(ConnectionPSQL):
                     "Region",
                     "Currency",
                     "iexId",
-                    "figi",
-                    "cik") VALUES (%s, %s, %s, %s,%s, %s, %s, %s,%s, %s, %s)"""
+                    "figi") VALUES (%s, %s, %s, %s,%s, %s, %s, %s,%s, %s)"""
             self.cur.execute(stmt, tuples_stocks)
         except Exception as e:
             print(e)
