@@ -123,11 +123,11 @@ class StocksDbHelper(ConnectionPSQL):
         CREATE TABLE IF NOT EXISTS "Stocks" 
         ("Id" SERIAL PRIMARY KEY,
         "CreatedOn" timestamp DEFAULT now(),
-        "Symbol" BOOLEAN, 
+        "Symbol" varchar(20), 
         "Exchange" varchar(20),
         "Name" varchar(128), 
         "DateIex" varchar(10), 
-        "Status" int,
+        "Status" boolean,
         "TypeProduct" varchar(6),
             "Region" varchar(255),
             "Currency" varchar(255),
