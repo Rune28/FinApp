@@ -130,7 +130,7 @@ class StocksDbHelper(ConnectionPSQL):
         "Status" boolean,
         "TypeProduct" varchar(6),
             "Region" varchar(32),
-            "Currency" varchar(max),
+            "Currency" varchar(32),
             "iexId" varchar(128)  ,
             "figi" varchar(128) )"""
         # index_user = 'Create index'
