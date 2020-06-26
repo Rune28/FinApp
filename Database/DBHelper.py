@@ -125,7 +125,7 @@ class StocksDbHelper(ConnectionPSQL):
         "CreatedOn" timestamp DEFAULT now(),
         "Symbol" varchar(20), 
         "Exchange" varchar(20),
-        "Name" varchar(max), 
+        "Name" varchar(1024), 
         "DateIex" varchar(10), 
         "Status" boolean,
         "TypeProduct" varchar(6),
