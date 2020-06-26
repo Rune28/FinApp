@@ -10,16 +10,16 @@ def search_company(update, context):
         text = update.message.text.split(' ')
         ###query database for symbol and name
         users_stocks = finapp_stocks.get_stocks(text[0])
-        print(users_stocks)
         ###set qty news
         context.user_data['qty_news'] = text[1]
-        print(context.user_data['qty_news'])
         ###keyboard
-        keyboard_stocks = [InlineKeyboardButton('/'.join([x[0],x[1]]) , callback_data= x[0]) for x in users_stocks]
+        keyboard_stocks = [[InlineKeyboardButton('/'.join([x[0],x[1]]) , callback_data= x[0])] for x in users_stocks]
         ##send keyboard to user
         try:
             reply_markup = InlineKeyboardMarkup(keyboard_stocks)
-            update.message.reply_text('Please choose:', reply_markup=reply_markup)
+            query = update.callback_query
+            query.answer()
+            query.edit_message_text('Please choose:', reply_markup=reply_markup)
         except Exception as e:
             print(e)
     else:
