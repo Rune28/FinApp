@@ -123,15 +123,15 @@ class StocksDbHelper(ConnectionPSQL):
         CREATE TABLE IF NOT EXISTS "Stocks" 
         ("Id" SERIAL PRIMARY KEY,
         "CreatedOn" timestamp DEFAULT now(),
-        "Symbol" varchar(20), 
+        "Symbol" BOOLEAN, 
         "Exchange" varchar(20),
         "Name" varchar(128), 
         "DateIex" varchar(10), 
         "Status" int,
-        "TypeProduct" varchar(20),
+        "TypeProduct" varchar(6),
             "Region" varchar(255),
             "Currency" varchar(255),
-            "iexId" BOOLEAN ,
+            "iexId" varchar(255)  ,
             "figi" varchar(255) )"""
         # index_user = 'Create index'
         try:
@@ -152,11 +152,11 @@ class StocksDbHelper(ConnectionPSQL):
                     "Exchange",
                     "Name", 
                     "DateIex", 
-                    "Status",
                     "TypeProduct",
+                    "iexId",
                     "Region",
                     "Currency",
-                    "iexId",
+                    "Status",
                     "figi") VALUES (%s, %s, %s, %s,%s, %s, %s, %s,%s, %s)"""
             self.cur.execute(stmt, tuples_stocks)
         except Exception as e:
