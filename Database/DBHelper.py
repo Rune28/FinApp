@@ -121,7 +121,7 @@ class StocksDbHelper(ConnectionPSQL):
     def tickers_table(self):
         table = """
         CREATE TABLE IF NOT EXISTS "Stocks" 
-        ("Id" SERIAL PRIMARY KEY,
+        ("Id" SERIAL PRIMARY KEY DEFAULT uuid_generate_v4(),
         "CreatedOn" timestamp,
         "Symbol" varchar(128), 
         "Name" varchar(128), 
