@@ -12,6 +12,7 @@ def search_company(update, context):
         context.user_data['company_search'] = finapp_stocks.get_stocks(text[0])
         ###set qty news
         context.user_data['qty_news'] = text[1]
+        print(context.user_data['company_search'])
 
 def output_companies(update,context):
     keyboard_stocks = [[InlineKeyboardButton('/'.join([x[0],x[1]]) , callback_data= x[0])] for x in context.user_data['company_search']]
