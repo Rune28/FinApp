@@ -10,3 +10,4 @@
 *config_iex.py
 *.pyc
 /data/*
+All_tickers.txt*
