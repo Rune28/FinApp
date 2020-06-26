@@ -162,3 +162,14 @@ class StocksDbHelper(ConnectionPSQL):
             self.cur.execute(stmt, tuples_stocks)
         except Exception as e:
             print(e)
+
+finapp_users = UserDBHelper(host=config.host,
+                user=config.user, 
+                password=config.password, 
+                dbname=config.dbname, 
+                port = config.port)
+finapp_stocks = StocksDbHelper(host=config.host,
+                user=config.user, 
+                password=config.password, 
+                dbname=config.dbname, 
+                port = config.port)
