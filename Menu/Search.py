@@ -13,11 +13,15 @@ def search_company(update, context):
         print(users_stocks)
         ###set qty news
         context.user_data['qty_news'] = text[1]
+        print(context.user_data['qty_news'])
         ###keyboard
         keyboard_stocks = [InlineKeyboardButton('/'.join([x[0],x[1]]) , callback_data= x[0]) for x in users_stocks]
         ##send keyboard to user
-        reply_markup = InlineKeyboardMarkup(keyboard_stocks)
-        update.message.reply_text('Please choose:', reply_markup=reply_markup)
+        try:
+            reply_markup = InlineKeyboardMarkup(keyboard_stocks)
+            update.message.reply_text('Please choose:', reply_markup=reply_markup)
+        except Exception as e:
+            print(e)
     else:
         print('No')
         pass
