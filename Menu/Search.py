@@ -9,7 +9,10 @@ def search_company(update, context):
         ###split user text on name and qty of news
         text = update.message.text.split(' ')
         ###query database for symbol and name
-        users_stocks = finapp_stocks.get_stocks(text[0])
+        try:
+            users_stocks = finapp_stocks.get_stocks(text[0])
+        except Exception as e:
+            print(e)
         ###set qty news
         context.user_data['qty_news'] = text[1]
         ###keyboard
