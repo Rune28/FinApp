@@ -149,7 +149,8 @@ class StocksDbHelper(ConnectionPSQL):
     def insert_stocks(self,tuples_stocks):
         try:
             stmt = """INSERT INTO "Stocks" (
-                    "Symbol", 
+                    "Symbol",
+                    "Exchange",
                     "Name", 
                     "DateRegister", 
                     "Status",
