@@ -143,7 +143,9 @@ class StocksDbHelper(ConnectionPSQL):
         stmt = f"""SELECT "Symbol","Name"
                     FROM "Stocks" 
                     where "Symbol" ~* '{like_var}' or "Name" ~* '{like_var}'"""
-        return [x for x in self.cur.execute(stmt)]
+        self.cur.execute(stmt)
+        rows = self.cur.fetchall()
+        return [x for x in rows]
     
     def insert_stocks(self,tuples_stocks):
         try:
