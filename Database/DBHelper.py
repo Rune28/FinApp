@@ -125,14 +125,14 @@ class StocksDbHelper(ConnectionPSQL):
         "CreatedOn" timestamp DEFAULT now(),
         "Symbol" varchar(20), 
         "Exchange" varchar(20),
-        "Name" varchar(128), 
+        "Name" varchar(max), 
         "DateIex" varchar(10), 
         "Status" boolean,
         "TypeProduct" varchar(6),
-            "Region" varchar(255),
-            "Currency" varchar(255),
-            "iexId" varchar(255)  ,
-            "figi" varchar(255) )"""
+            "Region" varchar(max),
+            "Currency" varchar(max),
+            "iexId" varchar(128)  ,
+            "figi" varchar(128) )"""
         # index_user = 'Create index'
         try:
             self.cur.execute(table)
