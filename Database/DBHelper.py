@@ -122,7 +122,7 @@ class StocksDbHelper(ConnectionPSQL):
         table = """
         CREATE TABLE IF NOT EXISTS "Stocks" 
         ("Id" SERIAL PRIMARY KEY,
-        "CreatedOn" timestamp SET DEFAULT now(),
+        "CreatedOn" timestamp DEFAULT now(),
         "Symbol" varchar(20), 
         "Exchange" varchar(20),
         "Name" varchar(128), 
