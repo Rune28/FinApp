@@ -9,7 +9,7 @@ Created on Mon May 25 17:33:02 2020
 from configs import config_database as config
 import psycopg2
 from datetime import datetime
-
+from psycopg2.extras import execute_values
 
 class ConnectionPSQL:
     def __init__(self, 
@@ -157,8 +157,8 @@ class StocksDbHelper(ConnectionPSQL):
                     "Region",
                     "Currency",
                     "Status",
-                    "figi") VALUES (%s, %s, %s, %s,%s, %s, %s, %s,%s, %s)"""
-            self.cur.execute(stmt, tuples_stocks)
+                    "figi") VALUES %s"""
+            execute_values(self.cur,stmt, tuples_stocks)
         except Exception as e:
             print(e)
 
