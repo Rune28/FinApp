@@ -11,20 +11,9 @@ import os
 database_file = os.path.join(os.getcwd(),'Database','All_tickers.txt')
 
 
-def format_str(i):
-    if i is None:
-        return ''
-    elif i is True:
-        return 'Yes'
-    elif i is False:
-        return 'No'
-    else:
-        return i
-
-format_str(True)
 
 def stocks_from_file(js):
-    values_tickers = [tuple(format_str(i.values())) for i in js]
+    values_tickers = [tuple(i.values()) for i in js]
     return tuple(values_tickers)
 
 with open(database_file, 'r') as fh:
@@ -32,6 +21,5 @@ with open(database_file, 'r') as fh:
 
 tuples = stocks_from_file(file)
 
-print(tuples)
 
 finapp_stocks.insert_stocks(tuples)
