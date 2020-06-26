@@ -129,7 +129,7 @@ class StocksDbHelper(ConnectionPSQL):
         "DateIex" varchar(10), 
         "Status" boolean,
         "TypeProduct" varchar(6),
-            "Region" varchar(max),
+            "Region" varchar(32),
             "Currency" varchar(max),
             "iexId" varchar(128)  ,
             "figi" varchar(128) )"""
