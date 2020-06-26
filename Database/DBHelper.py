@@ -122,10 +122,11 @@ class StocksDbHelper(ConnectionPSQL):
         table = """
         CREATE TABLE IF NOT EXISTS "Stocks" 
         ("Id" SERIAL PRIMARY KEY,
-        "CreatedOn" timestamp,
-        "Symbol" varchar(128), 
+        "CreatedOn" timestamp SET DEFAULT now(),
+        "Symbol" varchar(20), 
+        "Exchange" varchar(20),
         "Name" varchar(128), 
-        "DateRegister" varchar(128), 
+        "DateGen" varchar(128), 
         "Status" int,
         "TypeProduct" varchar(20),
             "Region" varchar(255),
@@ -148,7 +149,6 @@ class StocksDbHelper(ConnectionPSQL):
     def insert_stocks(self,tuples_stocks):
         try:
             stmt = """INSERT INTO "Stocks" (
-                    "CreatedOn",
                     "Symbol", 
                     "Name", 
                     "DateRegister", 
