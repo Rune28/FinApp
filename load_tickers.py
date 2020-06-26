@@ -10,11 +10,16 @@ import os
 
 database_file = os.path.join(os.getcwd(),'Database','All_tickers.txt')
 
+def form_str(i):
+    if i is None:
+        return ''
+    else:
+        return i
 
 
 def stocks_from_file(js):
-    values_tickers = [tuple(i.values()) for i in js]
-    return tuple(values_tickers)
+    values_tickers = [tuple(i.values())[:-1] for i in js]
+    return tuple([x for x in values_tickers])
 
 with open(database_file, 'r') as fh:
     file = json.loads(fh.read())
