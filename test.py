@@ -12,7 +12,7 @@ import logging
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler
 from telegram.ext import MessageHandler,Filters
 from Menu.Start import start
-from Menu.Search import search_company,search_menu
+from Menu.Search import search_company,search_menu,get_news
 from configs import config_telegram
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -38,6 +38,7 @@ def main():
     db.add_handler(CommandHandler('start', start))
     db.add_handler(CallbackQueryHandler(search_menu))
     db.add_handler(MessageHandler(Filters.text, search_company))
+    db.add_handler(CallbackQueryHandler(get_news))
     db.add_handler(CommandHandler('help', help))
     db.add_error_handler(error)
     # Start the Bot
