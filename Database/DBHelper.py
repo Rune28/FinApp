@@ -140,7 +140,7 @@ class StocksDbHelper(ConnectionPSQL):
             print(e)
 
     def get_stocks(self, like_var):
-        stmt = f"""SELECT"" "Symbol","Name"
+        stmt = f"""SELECT "Symbol","Name"
                     FROM "Stocks" 
                     where "Symbol" ~* '{like_var}' or "Name" ~* '{like_var}'"""
         return [x for x in self.cur.execute(stmt)]
