@@ -24,7 +24,7 @@ def search_company(update, context):
 Нужна подписка: {subs}""")
             else:
                 update.message.reply_text("К сожалению, новостей нет")
-        except Exception as e:
+        except:
             update.message.reply_text("Введите верный тикер")
     else:
         print('No')
@@ -33,5 +33,5 @@ def search_company(update, context):
 def search_menu(update, context):
     query = update.callback_query
     query.answer()
-    query.edit_message_text(text="Введите тикер компании и количество последних новостей Например: AAPL 3'".format(query.data))
+    query.edit_message_text(text="Введите тикер компании и количество последних новостей Например: AAPL 3'")
     context.user_data['search'] = True
