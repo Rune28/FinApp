@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 
 SELECT_NODE,Portfolio, News,SEARCH = map(chr, range(0,4))
 
-(START_OVER,DONE) = map(chr, range(4, 6))
+(START_OVER,DONE,BACK) = map(chr, range(4, 7))
 
 END = ConversationHandler.END
 
@@ -40,11 +40,14 @@ def start(update, context):
     text = 'Choice your destiny:'
     
     reply_markup = InlineKeyboardMarkup(keyboard, one_time_keyboard=True)
-    
+    ###prerequsites for multilevel menu
     if context.user_data.get(START_OVER):
         context.user_data[START_OVER] = True
     else:
         context.user_data[START_OVER] = False
+    context.user_data['search'] = False
+    ####does program start 1st time
+    
     if context.user_data[START_OVER]:
         update.callback_query.answer()
         update.callback_query.edit_message_text(text='Start again:', reply_markup=reply_markup)
@@ -76,6 +79,7 @@ def choose_news(update, context):
     query.answer()
     query.edit_message_text(text="Введите тикер компании и количество последних новостей Например: AAPL 3'")
     context.user_data[START_OVER] = True
+    context.user_data['search'] = True
     return SEARCH
 
 def error(update, context):
@@ -88,17 +92,18 @@ def stop(update, context):
     return END
 
 def search_company(update, context):
-    text = update.message.text.split(' ')
-    try:
-        stock = StockInfo()
-        data = stock.get_news(text[0],text[1])
-        print(data)
-        if len(data)>0:
-            for i in data:
-                if i[6]:
-                    subs = 'Да'
-                else:
-                    subs = 'Нет'
+    print(context.user_data['search'] == True and update.message.text.split(' ')[0] != '/start')
+    if context.user_data['search'] == True and update.message.text.split(' ')[0] != '/start':
+        text = update.message.text.split(' ')
+        try:
+            stock = StockInfo()
+            data = stock.get_news(text[0],text[1])
+            if len(data)>0:
+                for i in data:
+                    if i[6]:
+                        subs = 'Да'
+                    else:
+                        subs = 'Нет'
                     update.message.reply_text(f"""Время: {i[0]}
 Заголовок: {i[1]}
 Источник:{i[2]}
@@ -106,10 +111,15 @@ def search_company(update, context):
 Ссылка:{i[4]}
 Язык:{i[5]}
 Нужна подписка: {subs}""")
-        else:
-            update.message.reply_text("К сожалению, новостей нет")
-    except:
-        update.message.reply_text("Введите верный тикер")
+            else:
+                update.message.reply_text("К сожалению, новостей нет")
+        except:
+            update.message.reply_text("Введите верный тикер")
+    else:
+        print("Here")
+        return BACK
+        pass
+
 
 def main():
     # Create the Updater and pass it your bot's token.
@@ -131,7 +141,8 @@ def main():
         
         states={
             SELECT_NODE: selection_handlers,
-            SEARCH: [MessageHandler(Filters.text, search_company)],
+            SEARCH: [MessageHandler(Filters.text, search_company),],
+            BACK: [CallbackQueryHandler(back_to_menu, pattern='^' + str(BACK) + '$')]
         },
         fallbacks=[CommandHandler('stop', stop),
                    CommandHandler('help', help)],
