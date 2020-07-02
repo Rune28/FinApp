@@ -7,9 +7,9 @@ Created on Fri Jun 26 16:56:39 2020
 
 import logging
 
-from telegram import ReplyKeyboardMarkup
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters,
-                          ConversationHandler)
+                          ConversationHandler, CallbackQueryHandler)
+from telegram import (InlineKeyboardMarkup, InlineKeyboardButton)
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -17,109 +17,96 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 logger = logging.getLogger(__name__)
 
-CHOOSING, TYPING_REPLY, TYPING_CHOICE = range(3)
+SELECT_NODE,Portfolio, News = map(chr, range(0,3))
 
-reply_keyboard = [['Age', 'Favourite colour'],
-                  ['Number of siblings', 'Something else...'],
-                  ['Done']]
-markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
+(START_OVER,DONE) = map(chr, range(4, 6))
 
+END = ConversationHandler.END
 
-def facts_to_str(user_data):
-    facts = list()
-
-    for key, value in user_data.items():
-        facts.append('{} - {}'.format(key, value))
-
-    return "\n".join(facts).join(['\n', '\n'])
 
 
 def start(update, context):
-    update.message.reply_text(
-        "Hi! My name is Doctor Botter. I will hold a more complex conversation with you. "
-        "Why don't you tell me something about yourself?",
-        reply_markup=markup)
+    keyboard = [[InlineKeyboardButton("Portfolio", callback_data=str(Portfolio)),
+                 InlineKeyboardButton("Search company", callback_data=str(News))]]
+    
+    text = 'Choice your destiny:'
+    
+    reply_markup = InlineKeyboardMarkup(keyboard, one_time_keyboard=True)
+    
+    if context.user_data.get(START_OVER):
+        context.user_data[START_OVER] = True
+    else:
+        context.user_data[START_OVER] = False
+    print(context.user_data[START_OVER])
+    if context.user_data[START_OVER]:
+        update.callback_query.answer()
+        update.callback_query.edit_message_text(text='Start again:', reply_markup=reply_markup)
+    else:
+        update.message.reply_text(text=text, reply_markup=reply_markup)
 
-    return CHOOSING
+    return SELECT_NODE
 
+def back_to_menu(update, context):
+    """Return to top level conversation."""
+    context.user_data[START_OVER] = True
+    start(update, context)
 
-def regular_choice(update, context):
-    text = update.message.text
-    context.user_data['choice'] = text
-    update.message.reply_text(
-        'Your {}? Yes, I would love to hear about that!'.format(text.lower()))
-
-    return TYPING_REPLY
-
-
-def custom_choice(update, context):
-    update.message.reply_text('Alright, please send me the category first, '
-                              'for example "Most impressive skill"')
-
-    return TYPING_CHOICE
-
-
-def received_information(update, context):
-    user_data = context.user_data
-    text = update.message.text
-    category = user_data['choice']
-    user_data[category] = text
-    del user_data['choice']
-
-    update.message.reply_text("Neat! Just so you know, this is what you already told me:"
-                              "{} You can tell me more, or change your opinion"
-                              " on something.".format(facts_to_str(user_data)),
-                              reply_markup=markup)
-
-    return CHOOSING
+    return END
 
 
-def done(update, context):
-    user_data = context.user_data
-    if 'choice' in user_data:
-        del user_data['choice']
+def choose_portfolio(update, context):
+    update.callback_query.answer()
+    keyboard = [[InlineKeyboardButton("Done", callback_data=str(DONE))]]
+    
+    text = 'Sorry, portfolio is still in work'
+    
+    reply_markup = InlineKeyboardMarkup(keyboard, one_time_keyboard=True)
 
-    update.message.reply_text("I learned these facts about you:"
-                              "{}"
-                              "Until next time!".format(facts_to_str(user_data)))
+    update.callback_query.edit_message_text(text, reply_markup=reply_markup)
 
-    user_data.clear()
-    return ConversationHandler.END
+def choose_news(update, context):
+    update.callback_query.answer()
+    update.callback_query.edit_message_text(
+        'Sorry, news is still in work')
+    context.user_data[START_OVER] = True
+    start(update, context)
 
+def error(update, context):
+    """Log Errors caused by Updates."""
+    logger.warning('Update "%s" caused error "%s"', update, context.error)
+
+def stop(update, context):
+    """End Conversation by command."""
+    update.message.reply_text('Okay, bye.')
+    return END
 
 def main():
     # Create the Updater and pass it your bot's token.
     # Make sure to set use_context=True to use the new context based callbacks
     # Post version 12 this will no longer be necessary
-    updater = Updater('1166987527:AAF6t4J0TY-tTOJNEzxcxYDts27vqQjdDCM', use_context=True)
+    updater = Updater('1315359782:AAG5Pi7iG9t5lVFVO8MbiqupvZMDjQ1VZL0', use_context=True)
 
     # Get the dispatcher to register handlers
     dp = updater.dispatcher
 
     # Add conversation handler with the states CHOOSING, TYPING_CHOICE and TYPING_REPLY
+    selection_handlers = [
+        CallbackQueryHandler(choose_portfolio, pattern='^' + str(Portfolio) + '$'),
+        CallbackQueryHandler(choose_news, pattern='^' + str(News) + '$'),
+        CallbackQueryHandler(back_to_menu, pattern='^' + str(DONE) + '$')
+    ]
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler('start', start)],
-
+        
         states={
-            CHOOSING: [MessageHandler(Filters.regex('^(Age|Favourite colour|Number of siblings)$'),
-                                      regular_choice),
-                       MessageHandler(Filters.regex('^Something else...$'),
-                                      custom_choice)
-                       ],
-
-            TYPING_CHOICE: [MessageHandler(Filters.text,
-                                           regular_choice)
-                            ],
-
-            TYPING_REPLY: [MessageHandler(Filters.text,
-                                          received_information),
-                           ],
+            SELECT_NODE: selection_handlers,
         },
-
-        fallbacks=[MessageHandler(Filters.regex('^Done$'), done)]
+        fallbacks=[CommandHandler('stop', stop)],
     )
 
     dp.add_handler(conv_handler)
+    
+    dp.add_error_handler(error)
 
     # Start the Bot
     updater.start_polling()
